@@ -49,6 +49,7 @@ namespace MimicAPI.Controller
         public ActionResult Update(int id,[FromBody]Palavra palavra)
         {
             palavra.Id = id;
+            palavra.Atualizado = DateTime.Now;
             _banco.Palavras.Update(palavra);
             _banco.SaveChanges();
             return Ok();
