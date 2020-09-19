@@ -20,7 +20,7 @@ namespace MimicAPI.Controller
 
         [Route("")]
         [HttpGet]
-        public ActionResult GetAll(DateTime? data)
+        public ActionResult GetAll(DateTime? data, int? numeroPagina, int? quantidadeRegistro)
         {
             var item = _banco.Palavras.AsQueryable();
             if (data.HasValue)
@@ -28,6 +28,12 @@ namespace MimicAPI.Controller
                 item = item.Where(a => a.Criado > data.Value || a.Atualizado > data.Value && a.Ativo != false);
                 return new JsonResult(item);
             }
+            if (numeroPagina.HasValue && quantidadeRegistro.HasValue)
+            {
+                item = item.Skip((numeroPagina.Value - 1) * quantidadeRegistro.Value).Take(quantidadeRegistro.Value);
+                return new JsonResult(item);
+            }
+
             return new JsonResult(_banco.Palavras.Where(p => p.Ativo != false));
         }
 
