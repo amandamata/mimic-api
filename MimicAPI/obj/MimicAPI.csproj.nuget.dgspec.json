@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Amanda\\source\\repos\\MimicAPI\\MimicAPI\\MimicAPI.csproj": {}
+    "C:\\Users\\Amanda\\Documents\\GitHub\\ASP.NETCoreWebAPI\\MimicAPI\\MimicAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Amanda\\source\\repos\\MimicAPI\\MimicAPI\\MimicAPI.csproj": {
+    "C:\\Users\\Amanda\\Documents\\GitHub\\ASP.NETCoreWebAPI\\MimicAPI\\MimicAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Amanda\\source\\repos\\MimicAPI\\MimicAPI\\MimicAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Amanda\\Documents\\GitHub\\ASP.NETCoreWebAPI\\MimicAPI\\MimicAPI.csproj",
         "projectName": "MimicAPI",
-        "projectPath": "C:\\Users\\Amanda\\source\\repos\\MimicAPI\\MimicAPI\\MimicAPI.csproj",
+        "projectPath": "C:\\Users\\Amanda\\Documents\\GitHub\\ASP.NETCoreWebAPI\\MimicAPI\\MimicAPI.csproj",
         "packagesPath": "C:\\Users\\Amanda\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Amanda\\source\\repos\\MimicAPI\\MimicAPI\\obj\\",
+        "outputPath": "C:\\Users\\Amanda\\Documents\\GitHub\\ASP.NETCoreWebAPI\\MimicAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Amanda\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -37,6 +37,26 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
