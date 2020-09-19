@@ -20,8 +20,14 @@ namespace MimicAPI.Controller
 
         [Route("")]
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult GetAll(DateTime? data)
         {
+            var item = _banco.Palavras.AsQueryable();
+            if (data.HasValue)
+            {
+                item = item.Where(a => a.Criado > data.Value || a.Atualizado > data.Value && a.Ativo != false);
+                return new JsonResult(item);
+            }
             return new JsonResult(_banco.Palavras.Where(p => p.Ativo != false));
         }
 
