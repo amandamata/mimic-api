@@ -22,7 +22,8 @@ namespace MimicAPI
             {
                 opt.UseSqlite("Data Source=Database\\Mimic.db");
             });
-            services.AddMvc();
+            services.AddMvc(opt => opt.EnableEndpointRouting = false);
+            services.AddOptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
