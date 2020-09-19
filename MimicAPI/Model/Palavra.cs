@@ -15,3 +15,4 @@ namespace MimicAPI.Model
         public  DateTime? Atualizado{ get; set; }
     }
 }
+

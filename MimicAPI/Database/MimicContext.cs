@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using MimicAPI.Model;
 
-
 namespace MimicAPI.Database
 {
     public class MimicContext : DbContext
@@ -19,3 +18,4 @@ namespace MimicAPI.Database
 
     }
 }
+
