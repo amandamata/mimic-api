@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimicAPI.Database;
+using MimicAPI.Helper;
 using MimicAPI.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +24,33 @@ namespace MimicAPI.Controller
         [HttpGet]
         public ActionResult GetAll(DateTime? data, int? numeroPagina, int? quantidadeRegistro)
         {
-            var item = _banco.Palavras.AsQueryable();
-            if (data.HasValue)
-            {
-                item = item.Where(a => a.Criado > data.Value || a.Atualizado > data.Value && a.Ativo != false);
-                return new JsonResult(item);
-            }
-            if (numeroPagina.HasValue && quantidadeRegistro.HasValue)
-            {
-                item = item.Skip((numeroPagina.Value - 1) * quantidadeRegistro.Value).Take(quantidadeRegistro.Value);
-                return new JsonResult(item);
-            }
 
-            return new JsonResult(_banco.Palavras.Where(p => p.Ativo != false));
+            var item = _banco.Palavras.AsQueryable();
+            if(item != null)
+            {
+                if (data.HasValue)
+                {
+                    item = item.Where(a => a.Criado > data.Value || a.Atualizado > data.Value);
+                }
+                if (numeroPagina.HasValue && quantidadeRegistro.HasValue)
+                {
+                    var quantidadeTotalRegistros = item.Count();
+
+                    item = item.Skip((numeroPagina.Value - 1) * quantidadeRegistro.Value).Take(quantidadeRegistro.Value);
+
+                    var paginacao = new Paginacao();
+                    paginacao.NumeroPagina = numeroPagina.Value;
+                    paginacao.RegistroPorPagina = quantidadeRegistro.Value;
+                    paginacao.TotalRegistros = quantidadeTotalRegistros;
+                    paginacao.TotalPaginas = (int)Math.Ceiling((double)(paginacao.TotalRegistros / paginacao.RegistroPorPagina));
+
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginacao));
+
+                    if (numeroPagina > paginacao.TotalPaginas) return NotFound();
+                }
+                return new JsonResult(item.Where(i => i.Ativo != false));
+            }
+            return NotFound();
         }
 
         [Route("{status}")]
