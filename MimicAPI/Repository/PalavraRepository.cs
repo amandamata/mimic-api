@@ -19,11 +19,15 @@ namespace MimicAPI.Repository
             _banco = banco;
         }
 
-        public List<Palavra> GetAll(PalavraUrlQuery query)
+        public ListaPaginacao<Palavra> GetAll(PalavraUrlQuery query, bool? status)
         {
+            var lista = new ListaPaginacao<Palavra>();
             var item = _banco.Palavras.AsNoTracking().AsQueryable();
+            
             if (item != null)
             {
+                item = (status != null) ? item.Where(s => s.Ativo == status) : item.Where(s => s.Ativo == true);
+
                 if (query.Data.HasValue)
                 {
                     item = item.Where(a => a.Criado > query.Data.Value || a.Atualizado > query.Data.Value);
@@ -39,20 +43,17 @@ namespace MimicAPI.Repository
                     paginacao.RegistroPorPagina = query.QuantidadeRegistro.Value;
                     paginacao.TotalRegistros = quantidadeTotalRegistros;
                     paginacao.TotalPaginas = (int)Math.Ceiling((double)(paginacao.TotalRegistros / paginacao.RegistroPorPagina));
+                    lista.Paginacao = paginacao;
                 }
-                return item.ToList();
+                lista.AddRange(item.ToList());
+                return lista;
             }
-            return new List<Palavra>();
-        }
-
-        public List<Palavra> GetAll(bool status)
-        {
-            return (List<Palavra>)_banco.Palavras.Where(p => p.Ativo == status);
+            return new ListaPaginacao<Palavra>();
         }
 
         public Palavra Get(int id)
         {
-            return _banco.Palavras.AsNoTracking().FirstOrDefault(i => i.Id == id);
+            return _banco.Palavras.AsNoTracking().FirstOrDefault(i => i.Id == id && i.Ativo == true);
         }
 
         public void Create(Palavra palavra)
@@ -70,18 +71,9 @@ namespace MimicAPI.Repository
         public void Delete(int id)
         {
             var palavra = Get(id);
+            palavra.Ativo = false;
             _banco.Palavras.Update(palavra);
             _banco.SaveChanges();
-        }
-
-        public void DeleteHard(int id, string nome)
-        {
-            var palavra = Get(id);
-            if (palavra.Nome.Equals(palavra))
-            {
-                _banco.Palavras.Remove(palavra);
-                _banco.SaveChanges();
-            }
         }
     }
 }

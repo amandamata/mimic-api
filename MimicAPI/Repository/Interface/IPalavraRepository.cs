@@ -9,12 +9,10 @@ namespace MimicAPI.Repository.Interface
 {
     public interface IPalavraRepository
     {
-        List<Palavra> GetAll(PalavraUrlQuery query);
-        List<Palavra> GetAll(bool status);
+        ListaPaginacao<Palavra> GetAll(PalavraUrlQuery query, bool? status);
         Palavra Get(int id);
         void Create(Palavra palavra);
         void Update(Palavra palavra);
         void Delete(int id);
-        void DeleteHard(int id, string nome);
     }
 }

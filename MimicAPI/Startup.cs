@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MimicAPI.Database;
+using MimicAPI.Repository;
+using MimicAPI.Repository.Interface;
 
 namespace MimicAPI
 {
@@ -24,6 +26,7 @@ namespace MimicAPI
             });
             services.AddMvc(opt => opt.EnableEndpointRouting = false);
             services.AddOptions();
+            services.AddScoped<IPalavraRepository,PalavraRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
