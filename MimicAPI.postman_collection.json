@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "b8871187-bbeb-4b54-ba82-8aafb6e15ec9",
+		"name": "MimicAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Palavras - GetAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - GetAll Pagina",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - GetAll Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - GetAll Desativados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras/false",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras",
+						"false"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\":\"Gato\",\r\n    \"pontuacao\":2,\r\n    \"ativo\":true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/palavras/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pontuacao\":3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/palavras/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras/5",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Palavras - Delete Hard",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/palavras/5",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"palavras",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
