@@ -22,31 +22,30 @@ namespace MimicAPI.Controller
 
         [Route("")]
         [HttpGet]
-        public ActionResult GetAll(DateTime? data, int? numeroPagina, int? quantidadeRegistro)
+        public ActionResult GetAll([FromQuery]PalavraUrlQuery query)
         {
-
             var item = _banco.Palavras.AsQueryable();
             if(item != null)
             {
-                if (data.HasValue)
+                if (query.Data.HasValue)
                 {
-                    item = item.Where(a => a.Criado > data.Value || a.Atualizado > data.Value);
+                    item = item.Where(a => a.Criado > query.Data.Value || a.Atualizado > query.Data.Value);
                 }
-                if (numeroPagina.HasValue && quantidadeRegistro.HasValue)
+                if (query.NumeroPagina.HasValue && query.QuantidadeRegistro.HasValue)
                 {
                     var quantidadeTotalRegistros = item.Count();
-
-                    item = item.Skip((numeroPagina.Value - 1) * quantidadeRegistro.Value).Take(quantidadeRegistro.Value);
-
                     var paginacao = new Paginacao();
-                    paginacao.NumeroPagina = numeroPagina.Value;
-                    paginacao.RegistroPorPagina = quantidadeRegistro.Value;
+
+                    item = item.Skip((query.NumeroPagina.Value - 1) * query.QuantidadeRegistro.Value).Take(query.QuantidadeRegistro.Value);
+
+                    paginacao.NumeroPagina = query.NumeroPagina.Value;
+                    paginacao.RegistroPorPagina = query.QuantidadeRegistro.Value;
                     paginacao.TotalRegistros = quantidadeTotalRegistros;
                     paginacao.TotalPaginas = (int)Math.Ceiling((double)(paginacao.TotalRegistros / paginacao.RegistroPorPagina));
 
                     Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginacao));
 
-                    if (numeroPagina > paginacao.TotalPaginas) return NotFound();
+                    if (query.NumeroPagina > paginacao.TotalPaginas) return NotFound();
                 }
                 return new JsonResult(item.Where(i => i.Ativo != false));
             }
