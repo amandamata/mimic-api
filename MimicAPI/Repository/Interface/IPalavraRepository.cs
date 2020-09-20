@@ -1,9 +1,5 @@
 ﻿using MimicAPI.Helper;
 using MimicAPI.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MimicAPI.Repository.Interface
 {
