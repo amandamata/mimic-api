@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using MimicAPI.Database;
 using MimicAPI.Repository;
 using MimicAPI.Repository.Interface;
+using AutoMapper;
+using MimicAPI.Helper;
 
 namespace MimicAPI
 {
@@ -15,6 +17,15 @@ namespace MimicAPI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            #region AutoMapper-Config
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new DTOMapperProfile());
+            });
+            IMapper mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+            #endregion
+
             services.AddDbContext<MimicContext>(opt =>
             {
                 opt.UseSqlite("Data Source=Database\\Mimic.db");
