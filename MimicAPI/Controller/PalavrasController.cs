@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MimicAPI.Helper;
 using MimicAPI.Model;
+using MimicAPI.Model.DTO;
 using MimicAPI.Repository.Interface;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace MimicAPI.Controller
 {
@@ -11,9 +14,11 @@ namespace MimicAPI.Controller
     public class PalavrasController : ControllerBase
     {
         private readonly IPalavraRepository _repository;
-        public PalavrasController(IPalavraRepository repository)
+        private readonly IMapper _mapper;
+        public PalavrasController(IPalavraRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [Route("")]
@@ -32,7 +37,12 @@ namespace MimicAPI.Controller
         {
             var objeto = _repository.Get(id);
             if (objeto is null) return NotFound();
-            return Ok(objeto);
+            PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(objeto);
+            palavraDTO.Links = new List<LinkDTO>();
+            palavraDTO.Links.Add(
+                new LinkDTO("self", $"http://localhost:44350/api/palavras/{palavraDTO.Id}", "GET")
+            );
+            return Ok(palavraDTO);
         }
 
         [Route("")]
