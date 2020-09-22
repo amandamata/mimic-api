@@ -23,16 +23,15 @@ namespace MimicAPI.Controller
 
         [Route("")]
         [HttpGet]
-        public ActionResult GetAll([FromQuery]PalavraUrlQuery query, bool? status)
+        public ActionResult GetAll([FromQuery] PalavraUrlQuery query, bool? status)
         {
             var item = _repository.GetAll(query, status);
             if (query.NumeroPagina > item.Paginacao.TotalPaginas) return NotFound();
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(item.Paginacao));
             return Ok(item);
         }
-        
-        [Route("{id}")]
-        [HttpGet]
+
+        [HttpGet("{id}", Name = "GetWord")]
         public ActionResult Get(int id)
         {
             var objeto = _repository.Get(id);
@@ -40,23 +39,28 @@ namespace MimicAPI.Controller
             PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(objeto);
             palavraDTO.Links = new List<LinkDTO>();
             palavraDTO.Links.Add(
-                new LinkDTO("self", $"http://localhost:44350/api/palavras/{palavraDTO.Id}", "GET")
+                new LinkDTO("self", Url.Link("GetWord", new { id = palavraDTO.Id }), "GET")
+            );
+            palavraDTO.Links.Add(
+                new LinkDTO("update", Url.Link("UpdateWord", new { id = palavraDTO.Id }),"PUT")
+            );
+            palavraDTO.Links.Add(
+                new LinkDTO("delete", Url.Link("DeleteWord", new { id = palavraDTO.Id }), "DELETE")
             );
             return Ok(palavraDTO);
         }
 
         [Route("")]
         [HttpPost]
-        public ActionResult Create([FromBody]Palavra palavra)
+        public ActionResult Create([FromBody] Palavra palavra)
         {
             palavra.Criado = DateTime.Now;
             _repository.Create(palavra);
             return Created($"/api/palavras/{palavra.Id}", palavra);
         }
 
-        [Route("{id}")]
-        [HttpPut]
-        public ActionResult Update(int id,[FromBody]Palavra palavra)
+        [HttpPut("{id}", Name = "UpdateWord")]
+        public ActionResult Update(int id, [FromBody] Palavra palavra)
         {
             var objeto = _repository.Get(id);
             if (objeto == null) return NotFound();
@@ -66,8 +70,7 @@ namespace MimicAPI.Controller
             return Ok(palavra);
         }
 
-        [Route("{id}")]
-        [HttpDelete]
+        [HttpDelete("{id}", Name = "DeleteWord")]
         public ActionResult Delete(int id)
         {
             var objeto = _repository.Get(id);
