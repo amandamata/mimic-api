@@ -26,9 +26,20 @@ namespace MimicAPI.Controller
         public ActionResult GetAll([FromQuery] PalavraUrlQuery query, bool? status)
         {
             var item = _repository.GetAll(query, status);
-            if (query.NumeroPagina > item.Paginacao.TotalPaginas) return NotFound();
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(item.Paginacao));
-            return Ok(item);
+            if (item.Count == 0) return NotFound();
+            if (item.Paginacao != null && query.NumeroPagina != null)
+            {
+                if (query.NumeroPagina > item.Paginacao.TotalPaginas) return NotFound();
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(item.Paginacao));
+            }
+
+            var lista = _mapper.Map<ListaPaginacao<Palavra>, ListaPaginacao<PalavraDTO>>(item);
+            foreach (var p in lista)
+            {
+                p.Links = new List<LinkDTO>();
+                p.Links.Add(new LinkDTO("self", Url.Link("GetWord", new { id = p.Id }), "GET"));
+            }
+            return Ok(lista);
         }
 
         [HttpGet("{id}", Name = "GetWord")]
