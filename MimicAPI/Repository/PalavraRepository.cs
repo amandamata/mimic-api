@@ -43,7 +43,7 @@ namespace MimicAPI.Repository
                     paginacao.TotalPaginas = (int)Math.Ceiling((double)(paginacao.TotalRegistros / paginacao.RegistroPorPagina));
                     lista.Paginacao = paginacao;
                 }
-                lista.AddRange(item.ToList());
+                lista.Resultados.AddRange(item.ToList());
                 return lista;
             }
             return new ListaPaginacao<Palavra>();

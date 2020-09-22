@@ -21,12 +21,11 @@ namespace MimicAPI.Controller
             _mapper = mapper;
         }
 
-        [Route("")]
-        [HttpGet]
+        [HttpGet("", Name = "GetAll")]
         public ActionResult GetAll([FromQuery] PalavraUrlQuery query, bool? status)
         {
             var item = _repository.GetAll(query, status);
-            if (item.Count == 0) return NotFound();
+            if (item.Resultados.Count == 0) return NotFound();
             if (item.Paginacao != null && query.NumeroPagina != null)
             {
                 if (query.NumeroPagina > item.Paginacao.TotalPaginas) return NotFound();
@@ -34,11 +33,14 @@ namespace MimicAPI.Controller
             }
 
             var lista = _mapper.Map<ListaPaginacao<Palavra>, ListaPaginacao<PalavraDTO>>(item);
-            foreach (var p in lista)
+            foreach (var p in lista.Resultados)
             {
                 p.Links = new List<LinkDTO>();
                 p.Links.Add(new LinkDTO("self", Url.Link("GetWord", new { id = p.Id }), "GET"));
             }
+
+            lista.Links.Add(new LinkDTO("self", Url.Link("GetAll", query), "GET"));
+
             return Ok(lista);
         }
 
@@ -47,8 +49,11 @@ namespace MimicAPI.Controller
         {
             var objeto = _repository.Get(id);
             if (objeto is null) return NotFound();
+
             PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(objeto);
+
             palavraDTO.Links = new List<LinkDTO>();
+
             palavraDTO.Links.Add(
                 new LinkDTO("self", Url.Link("GetWord", new { id = palavraDTO.Id }), "GET")
             );
