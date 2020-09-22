@@ -26,13 +26,15 @@ namespace MimicAPI.Controller
         {
             var item = _repository.GetAll(query, status);
             if (item.Resultados.Count == 0) return NotFound();
-            if (item.Paginacao != null && query.NumeroPagina != null)
-            {
-                if (query.NumeroPagina > item.Paginacao.TotalPaginas) return NotFound();
-                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(item.Paginacao));
-            }
 
+            ListaPaginacao<PalavraDTO> lista = CriarLinksListPalavraDTO(query, item);
+            return Ok(lista);
+        }
+
+        private ListaPaginacao<PalavraDTO> CriarLinksListPalavraDTO(PalavraUrlQuery query, ListaPaginacao<Palavra> item)
+        {
             var lista = _mapper.Map<ListaPaginacao<Palavra>, ListaPaginacao<PalavraDTO>>(item);
+
             foreach (var p in lista.Resultados)
             {
                 p.Links = new List<LinkDTO>();
@@ -41,7 +43,21 @@ namespace MimicAPI.Controller
 
             lista.Links.Add(new LinkDTO("self", Url.Link("GetAll", query), "GET"));
 
-            return Ok(lista);
+            if (item.Paginacao != null)
+            {
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(item.Paginacao));
+                if (query.NumeroPagina <= item.Paginacao.TotalPaginas)
+                {
+                    var queryString = new PalavraUrlQuery() { NumeroPagina = query.NumeroPagina + 1, QuantidadeRegistro = query.QuantidadeRegistro, Data = query.Data };
+                    lista.Links.Add(new LinkDTO("next", Url.Link("GetAll", queryString), "GET"));
+                }
+                if (query.NumeroPagina - 1 > 0)
+                {
+                    var queryString = new PalavraUrlQuery() { NumeroPagina = query.NumeroPagina + 1, QuantidadeRegistro = query.QuantidadeRegistro, Data = query.Data };
+                    lista.Links.Add(new LinkDTO("prev", Url.Link("GetAll", queryString), "GET"));
+                }
+            }
+            return lista;
         }
 
         [HttpGet("{id}", Name = "GetWord")]
