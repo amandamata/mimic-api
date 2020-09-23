@@ -67,18 +67,9 @@ namespace MimicAPI.Controller
             if (objeto is null) return NotFound();
 
             PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(objeto);
-
-            palavraDTO.Links = new List<LinkDTO>();
-
-            palavraDTO.Links.Add(
-                new LinkDTO("self", Url.Link("GetWord", new { id = palavraDTO.Id }), "GET")
-            );
-            palavraDTO.Links.Add(
-                new LinkDTO("update", Url.Link("UpdateWord", new { id = palavraDTO.Id }),"PUT")
-            );
-            palavraDTO.Links.Add(
-                new LinkDTO("delete", Url.Link("DeleteWord", new { id = palavraDTO.Id }), "DELETE")
-            );
+            palavraDTO.Links.Add(new LinkDTO("self", Url.Link("GetWord", new { id = palavraDTO.Id }), "GET"));
+            palavraDTO.Links.Add(new LinkDTO("update", Url.Link("UpdateWord", new { id = palavraDTO.Id }),"PUT"));
+            palavraDTO.Links.Add(new LinkDTO("delete", Url.Link("DeleteWord", new { id = palavraDTO.Id }), "DELETE"));
             return Ok(palavraDTO);
         }
 
@@ -88,7 +79,11 @@ namespace MimicAPI.Controller
         {
             palavra.Criado = DateTime.Now;
             _repository.Create(palavra);
-            return Created($"/api/palavras/{palavra.Id}", palavra);
+
+            PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(palavra);
+            palavraDTO.Links.Add(new LinkDTO("self", Url.Link("GetWord", new { id = palavraDTO.Id }), "GET"));
+            
+            return Created($"/api/palavras/{palavra.Id}", palavraDTO);
         }
 
         [HttpPut("{id}", Name = "UpdateWord")]
@@ -99,7 +94,11 @@ namespace MimicAPI.Controller
             palavra.Id = id;
             palavra.Atualizado = DateTime.Now;
             _repository.Update(palavra);
-            return Ok(palavra);
+
+            PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(palavra);
+            palavraDTO.Links.Add(new LinkDTO("self", Url.Link("GetWord", new { id = palavraDTO.Id }), "GET"));
+            
+            return Ok(palavraDTO);
         }
 
         [HttpDelete("{id}", Name = "DeleteWord")]
