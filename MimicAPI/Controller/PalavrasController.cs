@@ -77,6 +77,10 @@ namespace MimicAPI.Controller
         [HttpPost]
         public ActionResult Create([FromBody] Palavra palavra)
         {
+            if (palavra == null) return BadRequest();
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
+            palavra.Ativo = true;
             palavra.Criado = DateTime.Now;
             _repository.Create(palavra);
 
@@ -91,8 +95,15 @@ namespace MimicAPI.Controller
         {
             var objeto = _repository.Get(id);
             if (objeto == null) return NotFound();
+            
+            if (palavra == null) return BadRequest();
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
             palavra.Id = id;
             palavra.Atualizado = DateTime.Now;
+            palavra.Ativo = objeto.Ativo;
+            palavra.Criado = objeto.Criado;
+
             _repository.Update(palavra);
 
             PalavraDTO palavraDTO = _mapper.Map<Palavra, PalavraDTO>(palavra);
