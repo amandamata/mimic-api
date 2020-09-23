@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using MimicAPI.Model;
-using MimicAPI.Model.DTO;
+using MimicAPI.V1.Model;
+using MimicAPI.V1.Model.DTO;
 
 namespace MimicAPI.Helper
 {

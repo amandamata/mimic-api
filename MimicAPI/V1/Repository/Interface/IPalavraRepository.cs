@@ -1,7 +1,7 @@
 ﻿using MimicAPI.Helper;
-using MimicAPI.Model;
+using MimicAPI.V1.Model;
 
-namespace MimicAPI.Repository.Interface
+namespace MimicAPI.V1.Repository.Interface
 {
     public interface IPalavraRepository
     {

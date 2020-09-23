@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MimicAPI.Database;
-using MimicAPI.Repository;
-using MimicAPI.Repository.Interface;
+using MimicAPI.V1.Repository;
+using MimicAPI.V1.Repository.Interface;
 using AutoMapper;
 using MimicAPI.Helper;
 
@@ -26,13 +26,14 @@ namespace MimicAPI
             services.AddSingleton(mapper);
             #endregion
 
-            services.AddDbContext<MimicContext>(opt =>
-            {
-                opt.UseSqlite("Data Source=Database\\Mimic.db");
-            });
+            services.AddDbContext<MimicContext>(opt => {opt.UseSqlite("Data Source=Database\\Mimic.db");});
             services.AddMvc(opt => opt.EnableEndpointRouting = false);
             services.AddOptions();
             services.AddScoped<IPalavraRepository,PalavraRepository>();
+            services.AddApiVersioning(cfg =>{
+                cfg.ReportApiVersions = true;
+                cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

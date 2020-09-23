@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MimicAPI.Helper;
-using MimicAPI.Model;
-using MimicAPI.Model.DTO;
-using MimicAPI.Repository.Interface;
+using MimicAPI.V1.Model;
+using MimicAPI.V1.Model.DTO;
+using MimicAPI.V1.Repository.Interface;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace MimicAPI.Controller
+namespace MimicAPI.V1.Controller
 {
-    [Route("api/palavras")]
+    [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class PalavrasController : ControllerBase
     {
         private readonly IPalavraRepository _repository;
