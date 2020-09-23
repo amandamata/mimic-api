@@ -12,7 +12,7 @@ namespace MimicAPI.V1.Controller
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion("1.0", Deprecated = true)]
     public class PalavrasController : ControllerBase
     {
         private readonly IPalavraRepository _repository;
@@ -23,6 +23,8 @@ namespace MimicAPI.V1.Controller
             _mapper = mapper;
         }
 
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpGet("", Name = "GetAll")]
         public ActionResult GetAll([FromQuery] PalavraUrlQuery query, bool? status)
         {
@@ -32,7 +34,6 @@ namespace MimicAPI.V1.Controller
             ListaPaginacao<PalavraDTO> lista = CriarLinksListPalavraDTO(query, item);
             return Ok(lista);
         }
-
         private ListaPaginacao<PalavraDTO> CriarLinksListPalavraDTO(PalavraUrlQuery query, ListaPaginacao<Palavra> item)
         {
             var lista = _mapper.Map<ListaPaginacao<Palavra>, ListaPaginacao<PalavraDTO>>(item);
@@ -62,6 +63,8 @@ namespace MimicAPI.V1.Controller
             return lista;
         }
 
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpGet("{id}", Name = "GetWord")]
         public ActionResult Get(int id)
         {
@@ -75,7 +78,8 @@ namespace MimicAPI.V1.Controller
             return Ok(palavraDTO);
         }
 
-        [Route("")]
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpPost]
         public ActionResult Create([FromBody] Palavra palavra)
         {
@@ -92,6 +96,8 @@ namespace MimicAPI.V1.Controller
             return Created($"/api/palavras/{palavra.Id}", palavraDTO);
         }
 
+        [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.1")]
         [HttpPut("{id}", Name = "UpdateWord")]
         public ActionResult Update(int id, [FromBody] Palavra palavra)
         {
@@ -114,6 +120,7 @@ namespace MimicAPI.V1.Controller
             return Ok(palavraDTO);
         }
 
+        [MapToApiVersion("1.1")]
         [HttpDelete("{id}", Name = "DeleteWord")]
         public ActionResult Delete(int id)
         {

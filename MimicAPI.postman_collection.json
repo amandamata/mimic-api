@@ -49,7 +49,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nome\":\"Gato\",\r\n    \"pontuacao\":2,\r\n    \"ativo\":true\r\n}\r\n",
+					"raw": "{\r\n    \"nome\":\"Morcego\",\r\n    \"pontuacao\":3\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,7 +77,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pontuacao\":3\r\n}\r\n",
+					"raw": "{\r\n    \"nome\":\"Macaco\",\r\n    \"pontuacao\":4\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -85,14 +85,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/palavras/1",
+					"raw": "{{url}}/api/palavras/3",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
 						"palavras",
-						"1"
+						"3"
 					]
 				}
 			},
