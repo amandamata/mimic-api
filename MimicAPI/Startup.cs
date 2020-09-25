@@ -8,6 +8,8 @@ using MimicAPI.V1.Repository;
 using MimicAPI.V1.Repository.Interface;
 using AutoMapper;
 using MimicAPI.Helper;
+using System.Linq;
+using System;
 
 namespace MimicAPI
 {
@@ -26,25 +28,34 @@ namespace MimicAPI
             services.AddSingleton(mapper);
             #endregion
 
-            services.AddDbContext<MimicContext>(opt => {opt.UseSqlite("Data Source=Database\\Mimic.db");});
-            services.AddMvc(opt => opt.EnableEndpointRouting = false);
+            services.AddDbContext<MimicContext>(o => {o.UseSqlite("Data Source=Database\\Mimic.db");});
+            services.AddMvc(o => o.EnableEndpointRouting = false);
             services.AddOptions();
             services.AddScoped<IPalavraRepository,PalavraRepository>();
-            services.AddApiVersioning(cfg =>{
-                cfg.ReportApiVersions = true;
-                cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            services.AddApiVersioning(c => {
+                c.ReportApiVersions = true;
+                c.AssumeDefaultVersionWhenUnspecified = true;
+                c.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.ResolveConflictingActions(apiDescription => apiDescription.First());
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "MimicAPI - V1", Version = "V1" });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","MimicAPI");
+                c.RoutePrefix = String.Empty;
+            });
         }
     }
 }
