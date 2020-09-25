@@ -9,6 +9,7 @@ API that provides CRUD for a mimic application/game.
 
 * Framework: .NETCore 3.1
 * Swagger
+* Database: SQLite
 
 ## Help
 
