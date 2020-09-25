@@ -11,6 +11,8 @@ using MimicAPI.Helper;
 using System.Linq;
 using System;
 using MimicAPI.Helper.Swagger;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
 
 namespace MimicAPI
 {
@@ -43,6 +45,11 @@ namespace MimicAPI
                 c.SwaggerDoc("v2.0", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "MimicAPI - v2.0", Version = "v2.0" });
                 c.SwaggerDoc("v1.1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "MimicAPI - v1.1", Version = "v1.1" });
                 c.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "MimicAPI - v1.0", Version = "v1.0" });
+                
+                var caminhoProjeto = PlatformServices.Default.Application.ApplicationBasePath;
+                var nomeProjeto = $"{PlatformServices.Default.Application.ApplicationName}.xml";
+                var caminhoArquivoXMLComentario = Path.Combine(caminhoProjeto, nomeProjeto);
+                c.IncludeXmlComments(caminhoArquivoXMLComentario);
                 
                 c.DocInclusionPredicate((docName, apiDesc) =>
                 {

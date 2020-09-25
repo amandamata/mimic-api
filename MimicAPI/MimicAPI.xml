@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MimicAPI</name>
+    </assembly>
+    <members>
+        <member name="M:MimicAPI.V1.Controller.PalavrasController.GetAll(MimicAPI.Helper.PalavraUrlQuery,System.Nullable{System.Boolean})">
+            <summary>
+            Pega do banco de dados todas as palavras existentes
+            </summary>
+            <param name="query">Filtros de pesquisa</param>
+            <param name="status">Listagem de palavras</param>
+            <returns></returns>
+        </member>
+        <member name="M:MimicAPI.V1.Controller.PalavrasController.Get(System.Int32)">
+            <summary>
+            Pega do banco de dados uma palavra escolhida
+            </summary>
+            <param name="id">Identificador da palavra</param>
+            <returns>Objeto palavra</returns>
+        </member>
+        <member name="M:MimicAPI.V1.Controller.PalavrasController.Create(MimicAPI.V1.Model.Palavra)">
+            <summary>
+            Cadastro da palavra no banco de dados
+            </summary>
+            <param name="palavra">Objeto palavra</param>
+            <returns>Objeto com ID</returns>
+        </member>
+        <member name="M:MimicAPI.V1.Controller.PalavrasController.Update(System.Int32,MimicAPI.V1.Model.Palavra)">
+            <summary>
+            Atualiza a palavra no banco de dados
+            </summary>
+            <param name="id">Identificador da palavra</param>
+            <param name="palavra">Objeto palavra com dados para alteração</param>
+            <returns>Objeto palavra</returns>
+        </member>
+        <member name="M:MimicAPI.V1.Controller.PalavrasController.Delete(System.Int32)">
+            <summary>
+            Desativa uma palavra do sistema
+            </summary>
+            <param name="id">Identificador</param>
+            <returns></returns>
+        </member>
+        <member name="T:MimicAPI.V2.Controller.PalavrasController">
+            <summary>
+            Pega do banco de dados todas as palavras existentes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MimicAPI.V2.Controller.PalavrasController.GetAll">
+            <summary>
+            Pega do banco de dados todas as palavras existentes
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
